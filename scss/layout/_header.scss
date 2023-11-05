@@ -1,0 +1,86 @@
+header{
+    background-color: map-get($colores, color4);
+    .h-titulo{
+        display: flex;
+        flex-flow: wrap column;
+        align-items: center;
+        .imagenes-titulo{
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        p{
+            font-family: 'Pacifico', cursive;
+            font-weight: lighter;
+            font-size: 2rem;
+        }
+    }
+    nav{
+        display: flex;
+        flex-direction: column;
+        
+        .registro{
+            li{
+                display: flex;
+                list-style: none;
+                a{
+                    width: 100%;
+                    margin: 10px;
+                    text-align: center;
+                    color: map-get($colores, color1);
+                    font-size: 1.5rem;
+                    &:hover{
+                        color: map-get($colores, color9);
+                    }
+                    &:active{
+                        color: map-get($colores, color5);
+                    }
+                }
+            }
+        }
+        ol{
+            margin: 2.1875rem;
+            li{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+                margin-bottom: 2rem;
+                a{
+                    list-style: circle;
+                    width: 100%;
+                    align-self: baseline;
+                    list-style: circle;
+                    color: map-get($colores, color1);
+                    font-size: 1.5rem;
+                    &:hover{
+                        color: map-get($colores, color9);
+                    }
+                    &:active{
+                        color: map-get($colores, color5);
+                    }
+                }
+                ul{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: baseline;
+                    li{
+                        margin: 1.25rem 0;
+                        
+                        a{
+                            color: map-get($colores, color1);
+                            font-size: 1.25rem;
+                            &:hover{
+                                color: map-get($colores, color9);
+                            }
+                            &:active{
+                                color: map-get($colores, color5);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

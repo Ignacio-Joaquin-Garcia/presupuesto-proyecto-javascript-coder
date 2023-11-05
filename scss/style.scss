@@ -1,0 +1,22 @@
+/*  Variables, Mixins y Funciones   */
+@import "./utilities/variables";
+@import "./utilities/mixins";
+@import "./utilities/funciones";
+
+/*  Correspondiente al codigo general   */
+@import "./base/typo";
+@import "./base/reset";
+@import "./base/generales";
+
+/*  Importamos el Layout  */
+@import "./layout/header";
+@import "./layout/main-index";
+@import "./layout/footer";
+
+/* Layout de Views */
+
+
+
+/* Importamos componentes */
+@import "./components/buttons";
+@import "./components/bootstrap";

@@ -1,0 +1,62 @@
+.grafico{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.875rem;
+    .titulo-grafico{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.5625rem;
+        img{
+            width: 3rem;
+        }
+    }
+}
+.estadisticas{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+
+    .e-rectangulo{
+        margin: .625rem;
+        background-color: white;
+        border-radius: 1.2rem;
+        width: 25%;
+        padding: 1rem 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 4px 5px 5px rgb(84, 83, 83);
+        h2{
+            color: black;
+            text-decoration: underline;
+            font-size: 1.35rem;
+        }
+        p{
+            // color: black;
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-decoration: underline;
+            font-family: 'pacifico';
+        }
+        .t-gastado{
+            color: map-get($colores, color5);
+        }
+        .t-categoria{
+            color: map-get($colores, color7);
+        }
+        .t-disponible{
+            color: map-get($colores, color6);
+        }
+        .t-amigos{
+            color: map-get($colores, color8);
+        }
+        .t-limite{
+            color: map-get($colores, color8);
+        }
+        .t-gastar-amigo{
+            color: map-get($colores, color8);
+        }
+    }
+}
