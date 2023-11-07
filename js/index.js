@@ -134,7 +134,6 @@ while(continuar == "si"){
     }
     mostrarTotales();
     continuar = prompt("¿desea seguir agregando datos? (Si/No)").toLowerCase();
-
 }
 
 
@@ -147,5 +146,4 @@ class usuario {
     this.contraseña,
     this.repetirContraseña
     }
-
 }
