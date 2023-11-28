@@ -181,11 +181,17 @@ header {
       color: black;
       text-decoration: underline;
       font-size: 1.35rem; }
-    .estadisticas .e-rectangulo p {
-      font-size: 2.5rem;
-      font-weight: bold;
-      text-decoration: underline;
-      font-family: 'pacifico'; }
+    .estadisticas .e-rectangulo .estadisticas-p-img {
+      display: flex;
+      align-items: center;
+      gap: 1rem; }
+      .estadisticas .e-rectangulo .estadisticas-p-img p {
+        font-size: 2.5rem;
+        font-weight: bold;
+        text-decoration: underline;
+        font-family: 'pacifico'; }
+      .estadisticas .e-rectangulo .estadisticas-p-img img {
+        height: 4rem; }
     .estadisticas .e-rectangulo .t-gastado {
       color: #D47070; }
     .estadisticas .e-rectangulo .t-categoria {
@@ -196,6 +202,10 @@ header {
       color: #179EBB; }
     .estadisticas .e-rectangulo .t-limite {
       color: #179EBB; }
+    .estadisticas .e-rectangulo .t-limite-no {
+      color: #D47070; }
+    .estadisticas .e-rectangulo .t-limite-ok {
+      color: #30817A; }
     .estadisticas .e-rectangulo .t-gastar-amigo {
       color: #179EBB; }
 
