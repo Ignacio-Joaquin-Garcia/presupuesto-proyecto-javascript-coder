@@ -17,24 +17,24 @@
   font-weight: lighter;
   font-size: 2.5rem;
   text-align: center;
-  color: #FFFFFF; }
+  color: #F2F2F2; }
 
 :is(h2) {
   font-family: 'Pacifico', cursive;
   font-weight: lighter;
   font-size: 2rem;
   text-align: center;
-  color: #FFFFFF; }
+  color: #F2F2F2; }
 
 :is(h3) {
   font-family: 'Oxygen Mono', monospace;
   font-size: 1.25rem;
-  color: #FFFFFF; }
+  color: #F2F2F2; }
 
 :is(p) {
   font-family: 'Paprika';
   font-size: 1rem;
-  color: #FFFFFF; }
+  color: #F2F2F2; }
 
 body {
   background-color: #232324;
@@ -53,36 +53,6 @@ main {
 footer {
   grid-column: 2 / 3;
   grid-row: 2 / 3; }
-
-.bounce-top {
-  animation: bounce-top 0.9s both; }
-
-@keyframes bounce-top {
-  0% {
-    transform: translateY(-45px);
-    animation-timing-function: ease-in;
-    opacity: 1; }
-  24% {
-    opacity: 1; }
-  40% {
-    transform: translateY(-24px);
-    animation-timing-function: ease-in; }
-  65% {
-    transform: translateY(-12px);
-    animation-timing-function: ease-in; }
-  82% {
-    transform: translateY(-6px);
-    animation-timing-function: ease-in; }
-  93% {
-    transform: translateY(-4px);
-    animation-timing-function: ease-in; }
-  25%, 55%, 75%, 87% {
-    transform: translateY(0);
-    animation-timing-function: ease-out; }
-  100% {
-    transform: translateY(0);
-    animation-timing-function: ease-out;
-    opacity: 1; } }
 
 /*  Importamos el Layout  */
 header {
@@ -110,7 +80,7 @@ header {
         width: 100%;
         margin: 10px;
         text-align: center;
-        color: #FFFFFF;
+        color: #F2F2F2;
         font-size: 1.5rem; }
         header nav .registro li a:hover {
           color: #d6a779; }
@@ -129,7 +99,7 @@ header {
           width: 100%;
           align-self: baseline;
           list-style: circle;
-          color: #FFFFFF;
+          color: #F2F2F2;
           font-size: 1.5rem; }
           header nav ol li a:hover {
             color: #d6a779; }
@@ -142,7 +112,7 @@ header {
           header nav ol li ul li {
             margin: 1.25rem 0; }
             header nav ol li ul li a {
-              color: #FFFFFF;
+              color: #F2F2F2;
               font-size: 1.25rem; }
               header nav ol li ul li a:hover {
                 color: #d6a779; }
@@ -161,6 +131,29 @@ header {
     .grafico .titulo-grafico img {
       width: 3rem; }
 
+.modificar-estadisticas {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  margin: 2rem 2rem 0.5rem 0;
+  gap: 0.5rem; }
+  .modificar-estadisticas .e-añadir {
+    background-image: url("../assets/img/boton-añadir.png"); }
+  .modificar-estadisticas .e-eliminar {
+    background-image: url("../assets/img/boton-eliminar.png"); }
+  .modificar-estadisticas button {
+    display: flex;
+    width: 3.25rem;
+    height: 3.25rem;
+    border: none;
+    background-size: cover;
+    background-position: center;
+    background-color: transparent;
+    border-radius: 50%; }
+    .modificar-estadisticas button:hover {
+      transform: scale(1.25);
+      transition: 0.35s; }
+
 .estadisticas {
   display: flex;
   flex-flow: row wrap;
@@ -168,7 +161,7 @@ header {
   margin-bottom: 6rem; }
   .estadisticas .e-rectangulo {
     margin: .625rem;
-    background-color: #FFFFFF;
+    background-color: #F2F2F2;
     border-radius: 1.2rem;
     width: 25%;
     padding: 1rem 0;
@@ -217,11 +210,15 @@ header {
   .añadir-eliminar-datos button {
     background-color: #946332;
     font-family: 'Oxygen Mono', monospace;
-    color: #FFFFFF;
+    color: #F2F2F2;
     text-decoration: dotted;
     font-size: 1rem;
-    padding: 1rem;
-    border-radius: 2rem; }
+    border-radius: 2rem;
+    width: 10rem;
+    height: 3rem; }
+    .añadir-eliminar-datos button:hover {
+      transform: scale(1.1);
+      transition: 0.25s; }
 
 .datos-presupuesto {
   display: grid;
@@ -261,7 +258,7 @@ header {
   .separadores .linea {
     width: 30%;
     height: .1875rem;
-    background-color: #FFFFFF; }
+    background-color: #F2F2F2; }
 
 .categorias {
   margin: 6rem 0; }
@@ -285,7 +282,7 @@ header {
     justify-items: center; }
     .totales :is(.nombre-amigo, .categoria-amigo, .fecha-amigo) h2 {
       grid-row: 1 / 2;
-      text-decoration: underline #FFFFFF; }
+      text-decoration: underline #F2F2F2; }
     .totales :is(.nombre-amigo, .categoria-amigo, .fecha-amigo) .datos {
       margin: 3rem 0;
       grid-row: 2 / 3;

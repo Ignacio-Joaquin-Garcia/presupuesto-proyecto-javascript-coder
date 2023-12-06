@@ -6,24 +6,24 @@
     font-weight: lighter;
     font-size: 2.5rem;
     text-align: center;
-    color: #FFFFFF;
+    color: map-get($colores, color1);
 }
 :is(h2) {
     font-family: 'Pacifico', cursive;
     font-weight: lighter;
     font-size: 2rem;
     text-align: center;
-    color: #FFFFFF;
+    color: map-get($colores, color1);
 }
 :is(h3) {
     font-family: 'Oxygen Mono', monospace;
     font-size: 1.25rem;
-    color: #FFFFFF;
+    color: map-get($colores, color1);
 }
 :is(p) {
     font-family: 'Paprika';
     font-size: 1rem;
-    color: #FFFFFF;
+    color: map-get($colores, color1);
 }
 
 body{
@@ -44,7 +44,3 @@ footer{
     grid-column: 2 / 3;
     grid-row: 2 / 3;
 }
-.bounce-top {
-	animation: bounce-top 0.9s both;
-}
- @keyframes bounce-top{0%{transform:translateY(-45px);animation-timing-function:ease-in;opacity:1}24%{opacity:1}40%{transform:translateY(-24px);animation-timing-function:ease-in}65%{transform:translateY(-12px);animation-timing-function:ease-in}82%{transform:translateY(-6px);animation-timing-function:ease-in}93%{transform:translateY(-4px);animation-timing-function:ease-in}25%,55%,75%,87%{transform:translateY(0);animation-timing-function:ease-out}100%{transform:translateY(0);animation-timing-function:ease-out;opacity:1}}

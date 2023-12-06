@@ -12,6 +12,37 @@
         }
     }
 }
+.modificar-estadisticas{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin: 2rem 2rem 0.5rem 0;
+    gap: 0.5rem;
+    .e-añadir{
+        background-image: url('../assets/img/boton-añadir.png');
+    }
+    .e-eliminar{
+        background-image: url('../assets/img/boton-eliminar.png');
+    }
+    button{
+        display: flex;
+        width: 3.25rem;
+        height: 3.25rem;
+        border: none;
+        background-size: cover;
+        background-position: center;
+        background-color: transparent;
+        border-radius: 50%;
+        &:hover{
+            transform: scale(1.25);
+            transition: 0.35s;
+        }
+    }
+}
+.modificar-estadisticas-open{
+    
+}
+
 .estadisticas{
     display: flex;
     flex-flow: row wrap;
@@ -87,8 +118,13 @@
         color: map-get($colores, color1);
         text-decoration: dotted;
         font-size: 1rem;
-        padding: 1rem;
         border-radius: 2rem;
+        width: 10rem;
+        height: 3rem;
+        &:hover{
+            transform: scale(1.1);
+            transition: 0.25s;
+        }
     }
 }
 
