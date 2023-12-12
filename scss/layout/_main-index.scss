@@ -1,3 +1,5 @@
+
+
 .grafico{
     display: flex;
     flex-direction: column;
@@ -39,8 +41,59 @@
         }
     }
 }
-.modificar-estadisticas-open{
-    
+
+#modificar-estadisticas{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    fieldset{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: none;
+        legend{
+            font-family: 'Paprika';
+            font-size: 1.75rem;
+            color: map-get($colores, color7);
+            text-decoration: underline;
+            margin: 1rem;
+        }
+        label{
+            font-family: 'Oxygen Mono', monospace;
+            font-size: 1.25rem;
+            color: map-get($colores, color1);
+            margin: 0.5rem;
+        }
+        input{
+            
+        }
+    }
+    .cambio-estadisticas{
+        display: flex;
+        gap: 5rem;
+        button{
+            //background-color: #946332;
+            font-family: 'Oxygen Mono', monospace;
+            color: map-get($colores, color1);
+            text-decoration: dotted;
+            font-size: 1rem;
+            border-radius: 2rem;
+            width: 8rem;
+            height: 2.5rem;
+            margin: 1rem 0 2rem 0;
+            &:hover{
+                transform: scale(1.1);
+                transition: 0.25s;
+            }
+        }
+        #subir-datos{
+            background-color: map-get($colores, color6);;
+        }
+        #descartar-datos{
+            background-color: map-get($colores, color5);;
+        }
+    }
 }
 
 .estadisticas{
@@ -86,8 +139,11 @@
         .t-categoria{
             color: map-get($colores, color7);
         }
-        .t-disponible{
+        .positivo{
             color: map-get($colores, color6);
+        }
+        .negativo{
+            color: map-get($colores, color5);
         }
         .t-amigos{
             color: map-get($colores, color8);
@@ -222,3 +278,23 @@
         }
     }
 }
+
+
+.claro{
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    h1{
+        color: rgb(0, 0, 0);
+    };
+    h2{
+        color: rgb(0, 0, 0);
+    };
+    h3{
+        color: rgb(0, 0, 0);
+    };
+    p{
+        color: rgb(0, 0, 0);
+    };
+}
+
+

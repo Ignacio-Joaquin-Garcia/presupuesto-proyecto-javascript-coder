@@ -154,6 +154,47 @@ header {
       transform: scale(1.25);
       transition: 0.35s; }
 
+#modificar-estadisticas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%; }
+  #modificar-estadisticas fieldset {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: none; }
+    #modificar-estadisticas fieldset legend {
+      font-family: 'Paprika';
+      font-size: 1.75rem;
+      color: #A894FF;
+      text-decoration: underline;
+      margin: 1rem; }
+    #modificar-estadisticas fieldset label {
+      font-family: 'Oxygen Mono', monospace;
+      font-size: 1.25rem;
+      color: #F2F2F2;
+      margin: 0.5rem; }
+  #modificar-estadisticas .cambio-estadisticas {
+    display: flex;
+    gap: 5rem; }
+    #modificar-estadisticas .cambio-estadisticas button {
+      font-family: 'Oxygen Mono', monospace;
+      color: #F2F2F2;
+      text-decoration: dotted;
+      font-size: 1rem;
+      border-radius: 2rem;
+      width: 8rem;
+      height: 2.5rem;
+      margin: 1rem 0 2rem 0; }
+      #modificar-estadisticas .cambio-estadisticas button:hover {
+        transform: scale(1.1);
+        transition: 0.25s; }
+    #modificar-estadisticas .cambio-estadisticas #subir-datos {
+      background-color: #30817A; }
+    #modificar-estadisticas .cambio-estadisticas #descartar-datos {
+      background-color: #D47070; }
+
 .estadisticas {
   display: flex;
   flex-flow: row wrap;
@@ -189,8 +230,10 @@ header {
       color: #D47070; }
     .estadisticas .e-rectangulo .t-categoria {
       color: #A894FF; }
-    .estadisticas .e-rectangulo .t-disponible {
+    .estadisticas .e-rectangulo .positivo {
       color: #30817A; }
+    .estadisticas .e-rectangulo .negativo {
+      color: #D47070; }
     .estadisticas .e-rectangulo .t-amigos {
       color: #179EBB; }
     .estadisticas .e-rectangulo .t-limite {
@@ -289,6 +332,18 @@ header {
       text-align: center; }
       .totales :is(.nombre-amigo, .categoria-amigo, .fecha-amigo) .datos p {
         margin: 1rem 0; }
+
+.claro {
+  background-color: white;
+  color: black; }
+  .claro h1 {
+    color: black; }
+  .claro h2 {
+    color: black; }
+  .claro h3 {
+    color: black; }
+  .claro p {
+    color: black; }
 
 /* Layout de Views */
 /* Importamos componentes */

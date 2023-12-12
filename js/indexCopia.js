@@ -147,33 +147,15 @@ function nuevaEtiqueta(nombreEtiqueta, etiqueta, clase, anidar){
     return nombreEtiqueta;
     }; //funcion para crear etiquetas HTML
 
-
-
-
-
-
-
-
-
 let totalGastado = 0;
 let contadorAmigos = 0;
 let totalGastoAmigo = 0;
 let categoriasGasto = {};
-let limite;                // =prompt("cuanto dinero limite piensan llegar a gastar entre todos?");
+let limite = prompt("cuanto dinero limite piensan llegar a gastar entre todos?");
 let saberLimite;
 let textoSaberLimite;
 let saberLimiteImg;
 let colorTextoLimite;
-
-let categoriaMaxGasto = "";
-let maxGasto = 0;
-
-let dineroDisponible;
-let dineroDisponibleInput;
-
-
-/*
- Agregar funcionalidad para añadir el dinero disponible de forma bonita
 
 let dineroDisponibleInput = prompt("Dinero Disponible");
 let dineroDisponible = parseFloat(dineroDisponibleInput);
@@ -184,7 +166,6 @@ while (isNaN(dineroDisponible)) {
 }
 dineroDisponible = Math.round(dineroDisponible);
 console.log("dinero disponible: "+dineroDisponible);
-*/
 
 
 function calcularEstadisticas(){
@@ -217,7 +198,7 @@ function calcularEstadisticas(){
                 saberLimite = "";
                 return saberLimiteImg, textoSaberLimite, limite, colorTextoLimite;
             default:
-                //alert("Error, ingresar dato válido");
+                alert("Error, ingresar dato válido");
                 saberLimite="";
                 return saberLimite;
         }
@@ -267,69 +248,12 @@ sectionAñadirBorrarDatos.innerHTML = `
 main.appendChild(sectionAñadirBorrarDatos);
 
 
-
-let botonAñadir = document.querySelector(".agregar-datos");
-botonAñadir.addEventListener("click", function(){
-    //Codigo generador de registro de datos
-    contadorAmigos++;
-    let nuevoDato = new ingresarDatos(
-        contadorAmigos,
-        prompt("Nombre del amigo:"),
-        parseInt(prompt("Gasto del amigo:")),
-        prompt("Categoría del gasto:"),
-        prompt("Fecha del gasto:")
-    );
-
-    let datos1 = document.getElementById("datos1");
-    let datos2 = document.getElementById("datos2");
-    let datos3 = document.getElementById("datos3");
-    let datos4 = document.getElementById("datos4");
-    let datos5 = document.getElementById("datos5");
-    datos1.innerHTML += `<p>${nuevoDato.id}</p>`;
-    datos2.innerHTML += `<p>${nuevoDato.amigo}</p>`;
-    datos3.innerHTML += `<p>${nuevoDato.gastoAmigo}</p>`;
-    datos4.innerHTML += `<p>${nuevoDato.categoria}</p>`;
-    datos5.innerHTML += `<p>${nuevoDato.fecha}</p>`;
-
-    //Registro de categorias existentes para luego sacar en cual se gasto mas
-    categoriasGasto[nuevoDato.categoria] = (categoriasGasto[nuevoDato.categoria] || 0) + nuevoDato.gastoAmigo;
-    totalGastado = totalGastado + Math.round(parseFloat(nuevoDato.gastoAmigo));
-    console.log("total gastado: "+totalGastado);
-    console.log(nuevoDato);
-    
-
-    // Buscar de las categorias ingresadas por el user, en cual se gasto mas para luego poner en estadisticas
-
-    for (const categoria in categoriasGasto) {
-        if (categoriasGasto[categoria] > maxGasto) {
-            maxGasto = categoriasGasto[categoria];
-            categoriaMaxGasto = categoria;
-        }
-    }
-    console.log("Categoría en la que se gastó más:", categoriaMaxGasto);
-    console.log("Total gastado en esa categoría:", maxGasto);
-
-    
-});
-
-
-//let botonEliminar = document.getElementByClassName("eliminar-datos")
-
-
-
-
-
-
-
-
-
-
-
-
 //Se declara section con todos los datos que generara el usuario
 let sectionDatosPresupuesto = document.createElement("section");
 sectionDatosPresupuesto.className = "datos-presupuesto";
 main.appendChild(sectionDatosPresupuesto);
+
+
 //Constructor de datos
 class ingresarDatos{
     constructor(id, amigo, gastoAmigo, categoria, fecha){
@@ -340,6 +264,7 @@ class ingresarDatos{
         this.fecha = fecha
     }
 }
+
 sectionDatosPresupuesto.innerHTML = `
                                     <div class="cant-amigos">
                                         <img class="d-p-titulos" src="./assets/img/cant-amigos.png" alt="doble tilde simbolico">
@@ -370,9 +295,49 @@ sectionDatosPresupuesto.innerHTML = `
 
 
 
+let continuar = prompt("¿desea añadir datos? (Si/No)").toLowerCase();
+if (continuar != "si" && continuar != "no"){continuar = prompt("ingrese un dato valido (Si/No)").toLowerCase();}
+while (continuar === "si") {
+    contadorAmigos++;
+    let nuevoDato = new ingresarDatos(
+        contadorAmigos,
+        prompt("Nombre del amigo:"),
+        parseInt(prompt("Gasto del amigo:")),
+        prompt("Categoría del gasto:"),
+        prompt("Fecha del gasto:")
+    );
 
+    let datos1 = document.getElementById("datos1");
+    let datos2 = document.getElementById("datos2");
+    let datos3 = document.getElementById("datos3");
+    let datos4 = document.getElementById("datos4");
+    let datos5 = document.getElementById("datos5");
+    datos1.innerHTML += `<p>${nuevoDato.id}</p>`;
+    datos2.innerHTML += `<p>${nuevoDato.amigo}</p>`;
+    datos3.innerHTML += `<p>${nuevoDato.gastoAmigo}</p>`;
+    datos4.innerHTML += `<p>${nuevoDato.categoria}</p>`;
+    datos5.innerHTML += `<p>${nuevoDato.fecha}</p>`;
 
+    //Registro de categorias existentes para luego sacar en cual se gasto mas
+    categoriasGasto[nuevoDato.categoria] = (categoriasGasto[nuevoDato.categoria] || 0) + nuevoDato.gastoAmigo;
+    totalGastado = totalGastado + Math.round(parseFloat(nuevoDato.gastoAmigo));
+    console.log("total gastado: "+totalGastado);
+    console.log(nuevoDato);
+    continuar = prompt("¿Quieres seguir agregando datos de amigos? si/no").toLocaleLowerCase();
+    if (continuar != "si" && continuar != "no"){continuar = prompt("ingrese un dato valido (Si/No)").toLowerCase();}
+}
 
+// Buscar de las categorias ingresadas por el user, en cual se gasto mas para luego poner en estadisticas
+let categoriaMaxGasto = "";
+let maxGasto = 0;
+for (const categoria in categoriasGasto) {
+    if (categoriasGasto[categoria] > maxGasto) {
+        maxGasto = categoriasGasto[categoria];
+        categoriaMaxGasto = categoria;
+    }
+}
+console.log("Categoría en la que se gastó más:", categoriaMaxGasto);
+console.log("Total gastado en esa categoría:", maxGasto);
 
 
 
@@ -405,6 +370,7 @@ let mostrarTotalGastoAmigo = new estadistica("Total a gastar x Amigo", "$"+total
 
 
 const ARRAY_ESTADISTICAS = [mostrarTotalGastado, mostrarGastoCategoria, mostrarDineroDisponible, mostrarCantidadAmigos, mostrarLimite, mostrarLimiteDisponible, mostrarTotalGastoAmigo];
+
     ARRAY_ESTADISTICAS.forEach(estadistica =>{
     let divCards = document.createElement("div");
     divCards.className = "e-rectangulo";
@@ -451,8 +417,6 @@ class registrarse {
     this.repetirNuevaContraseña = repetirNuevaContraseña
     }
 }
-
-
 
 
 
