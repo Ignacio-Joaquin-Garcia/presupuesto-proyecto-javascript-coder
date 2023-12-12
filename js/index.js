@@ -99,11 +99,7 @@ function establecerDatos(){
     //RECREAMOS EL ARRAY CON CATEGORIAS, de esta forma nos ahorramos tener que guardarlo
     function guardarArrayCategorias(){
         for (const dato of datos) {
-            if (categoriasGasto[dato.categoria] === undefined) {
-            categoriasGasto[dato.categoria] = dato.gastoAmigo;
-            } else {
-            categoriasGasto[dato.categoria] += dato.gastoAmigo;
-            }
+            categoriasGasto[dato.categoria] === undefined ? categoriasGasto[dato.categoria] = dato.gastoAmigo : categoriasGasto[dato.categoria] += dato.gastoAmigo;
         }
     }
     guardarArrayCategorias()
@@ -133,35 +129,7 @@ function actualizarEstadisticas() {
 
 }
 
-//funcion para calcular limite
-/*
-function calcularLimite() {
-    saberLimite = limite - totalGastado;
 
-    switch (true) {
-        case saberLimite > 0:
-            saberLimiteImg = "<img src='./assets/img/limite-ok.png' alt='dentro del límite permitido'>";
-            textoSaberLimite = "Dinero antes de alcanzar el límite";
-            colorTextoLimite = "t-limite-ok";
-            break;
-        case saberLimite < 0:
-            saberLimiteImg = "<img src='./assets/img/limite-no.png' alt='fuera del límite permitido'>";
-            textoSaberLimite = "Límite pasado por";
-            colorTextoLimite = "t-limite-no";
-            break;
-        case saberLimite === 0:
-            saberLimiteImg = "<img src='./assets/img/limite-ok.png' alt='dentro del límite permitido'>";
-            textoSaberLimite = "Estás en tu límite";
-            colorTextoLimite = "t-limite-ok";
-            break;
-        default:
-            saberLimite = "ERROR";
-            break;
-    }
-
-    return { img: saberLimiteImg, texto: textoSaberLimite, color: colorTextoLimite, limite: saberLimite };
-}
-*/
 
 //----------------------------CREAMOS EL HTML--------------
 let main = document.createElement("main");
@@ -210,11 +178,9 @@ sectionModificarEstadisticas.appendChild(botonAgregarValoresGenerales);
         if (dineroDisponible < 0) {
             divDineroDisponible.classList.remove("positivo");
             divDineroDisponible.classList.add("negativo");
-            console.log("negativo");
         } else {
             divDineroDisponible.classList.remove("negativo");
             divDineroDisponible.classList.add("positivo");
-            console.log("positivo");
         }
     }
 
@@ -231,7 +197,6 @@ let nuevoLimiteDisponible = 0;
             nuevoLimiteDisponible = parseInt(InputNuevoLimiteDisponible.value);
             console.log("El nuevo Limite Disponible va a ser de: "+nuevoLimiteDisponible)
         })
-        //boton descartar
     }
 
 
@@ -305,9 +270,7 @@ function añadirDatos(){
             let gastoAmigo;
             do {
                 gastoAmigo = parseInt(prompt("Gasto del amigo:"));
-                if (isNaN(gastoAmigo)) {
-                    alert("Por favor, ingrese un número válido para el gasto del amigo.");
-                }
+                isNaN(gastoAmigo) && alert("Por favor, ingrese un número válido para el gasto del amigo.");
             } while (isNaN(gastoAmigo));
             return gastoAmigo;
         }
@@ -320,9 +283,6 @@ function añadirDatos(){
             prompt("Categoría del gasto:"),
             prompt("Fecha del gasto:")
         );
-        if(isNaN(totalGastado)){
-
-        }
         datos.push(nuevoDato);
 
         let datos1 = document.getElementById("datos1");
@@ -336,15 +296,12 @@ function añadirDatos(){
         datos4.innerHTML += `<p>${nuevoDato.categoria}</p>`;
         datos5.innerHTML += `<p>${nuevoDato.fecha}</p>`;
 
-        
-        
-
         //Registro de categorias existentes para luego sacar en cual se gasto mas
         categoriasGasto[nuevoDato.categoria] = (categoriasGasto[nuevoDato.categoria] || 0) + nuevoDato.gastoAmigo;
         totalGastado = totalGastado + Math.round(parseFloat(nuevoDato.gastoAmigo));
         console.log("total gastado: "+totalGastado);
         console.log(nuevoDato);
-        console.log(categoriasGasto)
+        console.log(categoriasGasto);
 
         // Buscar de las categorias ingresadas por el user, en cual se gasto mas para luego poner en estadisticas
         for (const categoria in categoriasGasto) {
@@ -357,14 +314,11 @@ function añadirDatos(){
         dineroDisponible = dineroDisponible - Math.round(parseFloat(nuevoDato.gastoAmigo));
         cambiarColorDineroDIsponible();
 
-
-
         console.log("Categoría en la que se gastó más:", categoriaMaxGasto);
         console.log("Total gastado en esa categoría:", maxGasto);
         actualizarEstadisticas();
 
-        console.log(datos)
-
+        console.log(datos);
     });
 }
 
@@ -464,28 +418,8 @@ const botonModo = document.getElementById("botonModo");
 
 botonModo.addEventListener("click", ()=>{
     document.body.classList.toggle("claro");
-    if(document.body.classList.contains("claro")){
-        localStorage.setItem("modo","claro");
-    }else{
-        localStorage.setItem("modo", "negro");
-    }
+    document.body.classList.contains("claro") ? localStorage.setItem("modo","claro") : localStorage.setItem("modo", "negro");
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 eliminarDatos();
