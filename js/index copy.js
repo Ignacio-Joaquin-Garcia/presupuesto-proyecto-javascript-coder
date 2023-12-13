@@ -275,10 +275,6 @@ main.appendChild(sectionAñadirBorrarDatos);
 
 function añadirDatos(){
     let botonAñadir = document.querySelector(".agregar-datos");
-    let datoAmigo = "";
-    let gasto = 0;
-    let categoria = "";
-    let fecha = "";
     botonAñadir.addEventListener("click", function(){
         function obtenerGastoAmigo(){
             let gastoAmigo;
@@ -288,74 +284,53 @@ function añadirDatos(){
             } while (isNaN(gastoAmigo));
             return gastoAmigo;
         }
-        Swal.fire({
-            title: "Ingreso de datos",
-            icon: "info",
-            html: `
-                <input type="text" id="nombre-amigo" class="swal2-input" placeholder="Nombre del amigo">
-                <input type="number" id="gasto" class="swal2-input" placeholder="Gasto">
-                <input type="text" id="categoria" class="swal2-input" placeholder="¿En que categoria?">
-                <input type="text" id="fecha" class="swal2-input" placeholder="¿En que fecha paso?">`,
-            showCancelButton: true,
-            focusConfirm: false,
-            preConfirm: () => {
-                datoAmigo = Swal.getPopup().querySelector("#nombre-amigo").value;
-                gasto = Swal.getPopup().querySelector("#gasto").value;
-                categoria = Swal.getPopup().querySelector("#categoria").value;
-                fecha = Swal.getPopup().querySelector("#fecha").value;
-                if (!datoAmigo || !gasto || !categoria || !fecha) {
-                    Swal.showValidationMessage("Completa todos los campos antes de continuar");
-                }
+        //Codigo generador de registro de datos
+        contadorAmigos++;
+        let nuevoDato = new ingresarDatos(
+            contadorAmigos,
+            prompt("Nombre del amigo:"),
+            obtenerGastoAmigo(),
+            prompt("Categoría del gasto:"),
+            prompt("Fecha del gasto:")
+        );
+        datos.push(nuevoDato);
+
+
+
+        let datos1 = document.getElementById("datos1");
+        let datos2 = document.getElementById("datos2");
+        let datos3 = document.getElementById("datos3");
+        let datos4 = document.getElementById("datos4");
+        let datos5 = document.getElementById("datos5");
+        datos1.innerHTML += `<p>${nuevoDato.id}</p>`;
+        datos2.innerHTML += `<p>${nuevoDato.amigo}</p>`;
+        datos3.innerHTML += `<p>${nuevoDato.gastoAmigo}</p>`;
+        datos4.innerHTML += `<p>${nuevoDato.categoria}</p>`;
+        datos5.innerHTML += `<p>${nuevoDato.fecha}</p>`;
+
+        //Registro de categorias existentes para luego sacar en cual se gasto mas
+        categoriasGasto[nuevoDato.categoria] = (categoriasGasto[nuevoDato.categoria] || 0) + nuevoDato.gastoAmigo;
+        totalGastado = totalGastado + Math.round(parseFloat(nuevoDato.gastoAmigo));
+        console.log("total gastado: "+totalGastado);
+        console.log(nuevoDato);
+        console.log(categoriasGasto);
+
+        // Buscar de las categorias ingresadas por el user, en cual se gasto mas para luego poner en estadisticas
+        for (const categoria in categoriasGasto) {
+            if (categoriasGasto[categoria] > maxGasto) {
+                maxGasto = categoriasGasto[categoria];
+                categoriaMaxGasto = categoria;
             }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                //Codigo generador de registro de datos
-                contadorAmigos++;
-                let nuevoDato = new ingresarDatos(
-                    contadorAmigos,
-                    datoAmigo,
-                    gasto,
-                    categoria,
-                    fecha
-                );
-                datos.push(nuevoDato);
+        }
 
-                let datos1 = document.getElementById("datos1");
-                let datos2 = document.getElementById("datos2");
-                let datos3 = document.getElementById("datos3");
-                let datos4 = document.getElementById("datos4");
-                let datos5 = document.getElementById("datos5");
-                datos1.innerHTML += `<p>${nuevoDato.id}</p>`;
-                datos2.innerHTML += `<p>${nuevoDato.amigo}</p>`;
-                datos3.innerHTML += `<p>${nuevoDato.gastoAmigo}</p>`;
-                datos4.innerHTML += `<p>${nuevoDato.categoria}</p>`;
-                datos5.innerHTML += `<p>${nuevoDato.fecha}</p>`;
+        dineroDisponible = dineroDisponible - Math.round(parseFloat(nuevoDato.gastoAmigo));
+        cambiarColorDineroDIsponible();
 
-                //------------Registro de categorias existentes para luego sacar en cual se gasto mas
-                categoriasGasto[nuevoDato.categoria] = (categoriasGasto[nuevoDato.categoria] || 0) + parseInt(nuevoDato.gastoAmigo);
-                totalGastado = totalGastado + Math.round(parseFloat(nuevoDato.gastoAmigo));
-                console.log("total gastado: "+totalGastado);
-                console.log(nuevoDato);
-                console.log(categoriasGasto);
+        console.log("Categoría en la que se gastó más:", categoriaMaxGasto);
+        console.log("Total gastado en esa categoría:", maxGasto);
+        actualizarEstadisticas();
 
-                //--------------Buscar de las categorias ingresadas por el user, en cual se gasto mas para luego poner en estadisticas
-                for (const categoria in categoriasGasto) {
-                    if (categoriasGasto[categoria] > maxGasto) {
-                        maxGasto = categoriasGasto[categoria];
-                        categoriaMaxGasto = categoria;
-                    }
-                }
-
-                dineroDisponible = dineroDisponible - Math.round(parseFloat(nuevoDato.gastoAmigo));
-                cambiarColorDineroDIsponible();
-            }
-
-            console.log("Categoría en la que se gastó más:", categoriaMaxGasto);
-            console.log("Total gastado en esa categoría:", maxGasto);
-            actualizarEstadisticas();
-
-            console.log(datos);
-        });
+        console.log(datos);
     });
 }
 
@@ -458,7 +433,28 @@ botonModo.addEventListener("click", ()=>{
     document.body.classList.contains("claro") ? localStorage.setItem("modo","claro") : localStorage.setItem("modo", "negro");
 });
 
+Swal.fire({
+    title: "Ingreso de datos",
+    icon: "info",
+    html: `
+        <input type="text" id="nombre-amigo" class="swal2-input" placeholder="Nombre del amigo">
+        <input type="text" id="gasto" class="swal2-input" placeholder="Gasto">
+        <input type="text" id="categoria" class="swal2-input" placeholder="¿En que categoria?">
+        <input type="text" id="fecha" class="swal2-input" placeholder="¿En que fecha paso?">`,
+    showCancelButton: true,
+    focusConfirm: false,
+    preConfirm: () => {
+        const input1 = Swal.getPopup().querySelector("#nombre-amigo").value;
+        const input2 = Swal.getPopup().querySelector("#gasto").value;
+        const input3 = Swal.getPopup().querySelector("#categoria").value;
+        const input4 = Swal.getPopup().querySelector("#fecha").value;
 
+        if (!input1 || !input2 || !input3 || !input4) {
+            Swal.showValidationMessage("Completa todos los campos antes de continuar");
+        }
+
+    }
+})
 
 eliminarDatos();
 añadirDatos();
