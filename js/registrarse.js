@@ -121,7 +121,6 @@ function registrarse(){
                             return res.json();
                         }
                     })
-
                     let tituloAviso = document.createElement("h3")
                     tituloAviso.innerText = "Registraste tu cuenta con éxito!!"
                     divContenedor.appendChild(tituloAviso)
@@ -135,8 +134,8 @@ function registrarse(){
                     divContenedorPrincipal.appendChild(pRedireccion)
                     setInterval(()=>{
                         cuentaRegresiva -= 1;
-                        cuentaRegresiva < 4 ? pRedireccion.textContent = `Redirrecionando a la pagina principal en ${cuentaRegresiva}` : console.log(cuentaRegresiva);
-                        cuentaRegresiva === 0 ? window.location.href = "../index.html" : console.log(cuentaRegresiva);
+                        cuentaRegresiva < 4 ? pRedireccion.textContent = `Redirrecionando a la pagina para iniciar sesión en ${cuentaRegresiva}` : console.log(cuentaRegresiva);
+                        cuentaRegresiva === 0 ? window.location.href = "inicio-sesion.html" : console.log(cuentaRegresiva);
                     }, 1000);
                 }else{
                     let aviso = document.createElement("h3")
@@ -169,3 +168,4 @@ document.addEventListener("DOMContentLoaded", ()=>{
         registrarse();
     })
 })
+

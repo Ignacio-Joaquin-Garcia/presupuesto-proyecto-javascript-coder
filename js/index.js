@@ -19,6 +19,7 @@ let dineroDisponible = 0;
 
 let datos = [];
 
+let usuario;
 //-------------------------------------Clases Principales
 class ingresarDatos{
     constructor(id, amigo, gastoAmigo, categoria, fecha){
@@ -77,6 +78,8 @@ function establecerEstadisticas(){
     if (categoriaMaxGasto === null){
         categoriaMaxGasto = "";
     }
+
+    usuario = JSON.parse(sessionStorage.getItem("usuario")) || "";
 }
 
 function establecerDatos(){
@@ -133,6 +136,26 @@ function actualizarEstadisticas() {
 
 //----------------------------CREAMOS EL HTML--------------
 let main = document.getElementById("main");
+
+//---------------CARGA DE API CON CUENTA y estructura HTML para dar bienvenida
+let sectionProfile = document.createElement("section");
+sectionProfile.className = "profile";
+main.appendChild(sectionProfile);
+if (usuario && (usuario.nombre !== "" && usuario.email !== "" && usuario.password !== "")){
+    let imgProfile = document.createElement("img");
+    imgProfile.src = "./assets/img/img-profile.png";
+    let bienvenidoProfile = document.createElement("h2")
+    bienvenidoProfile.innerHTML = `Bienvenido <span>${usuario.nombre}</span> !!`
+    sectionProfile.appendChild(imgProfile);
+    sectionProfile.appendChild(bienvenidoProfile)
+    console.log(usuario)
+} else{
+    let noIngresoUsuario = document.createElement("h3")
+    noIngresoUsuario.innerText = `Sin cuenta Ingresada, puede que se pierdan datos!!`
+    sectionProfile.appendChild(noIngresoUsuario);
+}
+
+
 
 
 //Declaramos Section con posibles futuros graficos

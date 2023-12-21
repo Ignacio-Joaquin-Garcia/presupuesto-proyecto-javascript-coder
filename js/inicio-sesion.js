@@ -77,9 +77,11 @@ function capturarDatosInput(){
         usuariosAPI.forEach(usuario => {
             if(inputEmail.value === usuario.email && inputPassword.value === usuario.password){
                 elUsuarioEntro = true
+                console.log("usuario ok " +elUsuarioEntro)
+                //-------Guardamos al mismo tiempo el usuario ingresado para utilizar en los otros html
+                sessionStorage.setItem("usuario", JSON.stringify(usuario));
             }
         });
-
         return new Promise((resolve, reject)=>{
             if(elUsuarioEntro === true){
                 resolve("promesa resuelta")
@@ -95,7 +97,6 @@ function capturarDatosInput(){
             let imgAviso = document.createElement("img")
             imgAviso.src = "../assets/img/limite-ok.png"
             divContenedor.appendChild(imgAviso)
-
             let cuentaRegresiva = 4;
             divContenedorPrincipal.style.display = "flex"
             divRegistro.style.display = "none"
@@ -105,7 +106,7 @@ function capturarDatosInput(){
                 cuentaRegresiva -= 1;
                 cuentaRegresiva < 4 ? pRedireccion.textContent = `Redirrecionando a la pagina principal en ${cuentaRegresiva}` : console.log(cuentaRegresiva);
                 cuentaRegresiva === 0 ? window.location.href = "../index.html" : console.log(cuentaRegresiva);
-            }, 1000);
+            }, 1000)
         })
         .catch(() => {
             console.log("contraseña erronea");
