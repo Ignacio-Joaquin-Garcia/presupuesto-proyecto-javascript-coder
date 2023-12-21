@@ -19,8 +19,8 @@
         </section>
         <nav>
             <ul class="registro">
-                <li><a href="#">Iniciar Sesion</a></li>
-                <li><a href="#">Registrarse</a></li>
+                <li><a href="./pages/inicio-sesion.html">Iniciar Sesión</a></li>
+                <li><a href="./pages/registro.html">Registrarse</a></li>
             </ul>
             <ol>
                 <li><a href="#">Presupuesto</a>
@@ -34,21 +34,28 @@
         </nav>
     </header>
 
-<form id="modificar-estadisticas">
-    <fieldset>
-        <legend>Cambiar valores de estadisticas</legend>
-        <label for="nuevo-dinero-disponible">Ingresar nuevo dinero disponible</label>
-        <input type="number" id="nuevo-dinero-disponible">
-        <label for="nuevo-limite-disponible">ingresar el nuevo limite</label>
-        <input type="number" id="nuevo-limite-disponible">
-    </fieldset>
-    <div class="cambio-estadisticas">
-        <button type="submit" id="descartar-datos">Descartar</button>
-        <button type="submit" id="subir-datos">Subir Datos</button>
-    </div>
-</form>
+<main id="main">
+    <section class="profile">
+        <img src="" alt="">
+        <h2>Bienvenido <span></span></h2>
+    </section>
+    <form id="modificar-estadisticas">
+        <fieldset>
+            <legend>Cambiar valores de estadisticas</legend>
+            <label for="nuevo-dinero-disponible">Ingresar nuevo dinero disponible</label>
+            <input type="number" id="nuevo-dinero-disponible">
+            <label for="nuevo-limite-disponible">ingresar el nuevo limite</label>
+            <input type="number" id="nuevo-limite-disponible">
+        </fieldset>
+        <div class="cambio-estadisticas">
+            <button type="submit" id="descartar-datos">Descartar</button>
+            <button type="submit" id="subir-datos">Subir Datos</button>
+        </div>
+    </form>
 
-<button type="button" id="botonModo">modo</button>
+    <button type="button" id="botonModo">modo</button>
+</main>
+
 
         <!-- <div class="separadores">
             <img src="./assets/img/separador.png" alt="separador">
@@ -56,11 +63,24 @@
             <img src="./assets/img/separador.png" alt="separador">
         </div> -->
 
-
-
     <footer>
-
+        <div class="f-title">
+            <img class="estrella1" src="./assets/img/estrella.png" alt="Estrellitas">
+            <h3>Friends Budget</h3>
+            <img class="estrella2" src="./assets/img/estrella.png" alt="Estrellitas">
+        </div>
+        <div class="f-social">
+            <a href="https://www.instagram.com/ignaciogarcia2643/" target="_blank"><img src="./assets/img/instagram-icon.png" alt="icono instagram"></a>
+            <div class="barras"></div>
+            <a href="https://www.linkedin.com/in/ignaciogarcia-webdeveloper" target="_blank"><img src="./assets/img/linkedin-icon.png" alt="icono linkedin"></a>
+            <div class="barras"></div>
+            <a href="https://w.app/IgnaWebDeveloper" target="_blank"><img src="./assets/img/whatsapp-icon.png" alt="icono whattsap"></a>
+        </div>
+        <div class="f-copy">
+            <p>© Copyright 2023 | Todos los derechos reservados | Buenos Aires, Argentina</p>
+        </div>
     </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./js/index.js"></script>
 </body>

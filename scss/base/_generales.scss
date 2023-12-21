@@ -26,11 +26,27 @@
     color: map-get($colores, color1);
 }
 
+.estrella1{
+    transform: rotate(180deg);
+    animation-name: estrella1;
+}
+.estrella2{
+    transform: rotate(0deg);
+    animation-name: estrella2;
+}
+:is(.estrella1, .estrella2){
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+    animation-duration: 8s;
+    animation-delay: 0.5s;
+}
+
+
 body{
     background-color: map-get($colores, color3);
     display: grid;
     grid-template-columns: 16% 1fr;
-    grid-template-rows: 1fr 5%;
+    grid-template-rows: 1fr 15%;
     
 }
 header{

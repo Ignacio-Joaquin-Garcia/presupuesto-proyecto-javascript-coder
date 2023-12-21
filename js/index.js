@@ -97,12 +97,12 @@ function establecerDatos(){
     }
 
     //RECREAMOS EL ARRAY CON CATEGORIAS, de esta forma nos ahorramos tener que guardarlo
-    function guardarArrayCategorias(){
+    function crearArrayCategorias(){
         for (const dato of datos) {
-            categoriasGasto[dato.categoria] === undefined ? categoriasGasto[dato.categoria] = dato.gastoAmigo : categoriasGasto[dato.categoria] += dato.gastoAmigo;
+            categoriasGasto[dato.categoria] === undefined ? categoriasGasto[dato.categoria] = parseInt(dato.gastoAmigo) : categoriasGasto[dato.categoria] += parseInt(dato.gastoAmigo);
         }
     }
-    guardarArrayCategorias()
+    crearArrayCategorias()
     console.log(categoriasGasto)
 }
 //----A tener en cuenta, se tiene que iniciar esta funcion antes de cargar cualquier elemento ya que contiene datos principales como variables
@@ -118,7 +118,7 @@ function actualizarEstadisticas() {
     mostrarCantidadAmigos.estadistica = contadorAmigos;
     mostrarLimite.estadistica = "$" + (limite || 0);
     mostrarLimiteDisponible.estadistica = "$" + (saberLimite || 0);
-    mostrarTotalGastoAmigo.estadistica = "$" + totalGastoAmigo;
+    mostrarTotalGastoAmigo.estadistica = "$" + (totalGastoAmigo ?? 0);
 
     ARRAY_ESTADISTICAS.forEach((estadistica, index) => {
         const estadisticaElement = document.querySelectorAll(".t-gastado, .t-categoria, .t-disponible, .t-amigos, .t-limite, .t-gastar-amigo")[index];
@@ -132,8 +132,8 @@ function actualizarEstadisticas() {
 
 
 //----------------------------CREAMOS EL HTML--------------
-let main = document.createElement("main");
-document.body.appendChild(main);
+let main = document.getElementById("main");
+
 
 //Declaramos Section con posibles futuros graficos
 let sectionGrafico = document.createElement("section");
@@ -200,7 +200,7 @@ let nuevoLimiteDisponible = 0;
         let InputNuevoDineroDisponible = document.getElementById("nuevo-dinero-disponible");
         let InputNuevoLimiteDisponible = document.getElementById("nuevo-limite-disponible");
         InputNuevoDineroDisponible.addEventListener("change", ()=>{
-            nuevoDineroDisponible = InputNuevoDineroDisponible.value;
+            nuevoDineroDisponible = parseInt(InputNuevoDineroDisponible.value);
             console.log("El nuevo Dinero Disponible va a ser de: "+nuevoDineroDisponible)
         })
         InputNuevoLimiteDisponible.addEventListener("change", ()=>{
