@@ -109,6 +109,7 @@ function registrarse(){
             //--AÑADIMOS TIEMPO MUERTO PARA QUE SE PUEDAN CARGAR LOS DATOS DEL SV
             setTimeout(()=>{
                 if(datosValidos === true){
+                    buttonSubmit.disabled = true;
                     usuario = new nuevoUsuario(nombre, email, password)
                     console.log(usuario)
                     //--GUARDAMOS DATOS EN API (HACEMOS LOS DATOS FLEXIBLES A CUALQUIER DISPOSITIVO)
@@ -137,6 +138,7 @@ function registrarse(){
                         cuentaRegresiva < 4 ? pRedireccion.textContent = `Redirrecionando a la pagina para iniciar sesión en ${cuentaRegresiva}` : console.log(cuentaRegresiva);
                         cuentaRegresiva === 0 ? window.location.href = "inicio-sesion.html" : console.log(cuentaRegresiva);
                     }, 1000);
+                setTimeout(()=>{buttonSubmit.disabled = false}, 1250)
                 }else{
                     let aviso = document.createElement("h3")
                     aviso.innerText = "El Email ingresado ya esta registrado! Pruebe ingresando un mail diferente";
@@ -144,7 +146,7 @@ function registrarse(){
                     divContenedorAvisos.appendChild(aviso)
                     setTimeout(()=>{aviso.remove()},6000)
                 }
-            }, 2500);
+            }, 800);
         } else{
             let aviso = document.createElement("h3")
             aviso.innerText = "No tiene que haber campos vacios!";

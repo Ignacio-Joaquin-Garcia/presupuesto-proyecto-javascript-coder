@@ -1,5 +1,19 @@
+fetch('https://658107903dfdd1b11c42512b.mockapi.io/datos/usuarios')
+.then(res => {
+    if (res.ok) {
+        return res.json();
+    }
+})
+.then(usuarios => {
+    usuariosAPI = usuarios;
+})
+.catch(error => {
+    console.log("error en la captura de datos"+error);
+})
 //----------------------DECLARAMOS VARIABLES PRINCIPALES--------
+let id = 0;
 let totalGastado = 0;
+let amigos = [];
 let contadorAmigos = 0;
 let totalGastoAmigo = 0;
 
@@ -18,6 +32,8 @@ let maxGasto = 0;
 let dineroDisponible = 0;
 
 let datos = [];
+
+
 
 let usuario;
 //-------------------------------------Clases Principales
@@ -40,31 +56,46 @@ class estadistica{
     }
 }
 
-
 //-----------------------FUNCIONES
+//CREAMOS UN REGISTRO DE FECHAS POR MES para utilizar en grafico
+function obtenerMes(fecha) {
+    const fechaObj = new Date(fecha);
+    return fechaObj.getMonth();
+}
+function inicializarDatosPorMes() {
+    const datosPorMes = new Array(12).fill(0);
+    const datosPorMesDisponible = new Array(12).fill(0);
+    return datosPorMes, datosPorMesDisponible;
+}
+const datosPorMes = inicializarDatosPorMes();
+const datosPorMesDisponible = inicializarDatosPorMes();
+
+
+
+function obtenerLongitudRealAmigos() {
+    const amigosUnicos = [...new Set(datos.map(dato => dato.amigo))];
+    return amigosUnicos.length;
+}
 //--------FUNCIONES DE CARGA Y SUBIDA DE DATOS
 function guardarEstadisticas(){
-    localStorage.setItem("total gastado", totalGastado);
     localStorage.setItem("contadorAmigos", contadorAmigos);
+    localStorage.setItem("total gastado", totalGastado);
     localStorage.setItem("textoMaxCategoria", categoriaMaxGasto);
-
     localStorage.setItem("datos", JSON.stringify(datos));
     localStorage.setItem("dineroDisponible", JSON.stringify(dineroDisponible));
     localStorage.setItem("limite", JSON.stringify(limite));
     localStorage.setItem("totalGastoAmigo", JSON.stringify(totalGastoAmigo));
-
-
 }
 
 function establecerEstadisticas(){
-    let totalGastadoGuardado = localStorage.getItem("total gastado");
-    if (totalGastadoGuardado !== null && !isNaN(totalGastadoGuardado)) {
-        totalGastado = parseInt(totalGastadoGuardado);
-    }
-
     let contadorAmigosGuardado = localStorage.getItem("contadorAmigos");
     if (contadorAmigosGuardado !== null && !isNaN(contadorAmigosGuardado)) {
         contadorAmigos = parseInt(contadorAmigosGuardado);
+    }
+
+    let totalGastadoGuardado = localStorage.getItem("total gastado");
+    if (totalGastadoGuardado !== null && !isNaN(totalGastadoGuardado)) {
+        totalGastado = parseInt(totalGastadoGuardado);
     }
 
     let totalGastoAmigoGuardado = JSON.parse(localStorage.getItem("totalGastoAmigo"))
@@ -82,10 +113,16 @@ function establecerEstadisticas(){
     usuario = JSON.parse(sessionStorage.getItem("usuario")) || "";
 }
 
+function recalcularDatosPorMesDisponible() {
+    datosPorMesDisponible.fill(dineroDisponible);
+}
+
 function establecerDatos(){
     datos = JSON.parse(localStorage.getItem("datos")) || [];
 
     for(const data of datos){
+        id+=1;
+        console.log(id)
         console.log(data)
         let datos1 = document.getElementById("datos1");
         let datos2 = document.getElementById("datos2");
@@ -99,21 +136,43 @@ function establecerDatos(){
         datos5.innerHTML += `<p>${data.fecha}</p>`;
     }
 
+    datosPorMes.fill(0);
+
+    for (const data of datos) {
+        const mes = obtenerMes(data.fecha);
+        datosPorMes[mes] += parseInt(data.gastoAmigo);
+    } 
+    recalcularDatosPorMesDisponible()
+    console.log(datosPorMes)
+    console.log(datosPorMesDisponible)
+        
     //RECREAMOS EL ARRAY CON CATEGORIAS, de esta forma nos ahorramos tener que guardarlo
     function crearArrayCategorias(){
         for (const dato of datos) {
             categoriasGasto[dato.categoria] === undefined ? categoriasGasto[dato.categoria] = parseInt(dato.gastoAmigo) : categoriasGasto[dato.categoria] += parseInt(dato.gastoAmigo);
         }
     }
-    crearArrayCategorias()
-    console.log(categoriasGasto)
+    function crearArrayAmigo(){
+        for (const dato of datos) {
+            amigos[dato.amigo] === undefined ? amigos[dato.amigo] = parseInt(dato.gastoAmigo) : amigos[dato.amigo] += parseInt(dato.gastoAmigo);
+        }
+        contadorAmigos = obtenerLongitudRealAmigos();
+    }
+    crearArrayCategorias();
+    crearArrayAmigo();
+    console.log(amigos);
+    console.log(categoriasGasto);
 }
+
 //----A tener en cuenta, se tiene que iniciar esta funcion antes de cargar cualquier elemento ya que contiene datos principales como variables
 establecerEstadisticas();
 
 // Función para actualizar las estadísticas
 function actualizarEstadisticas() {
     totalGastoAmigo = Math.round(totalGastado / contadorAmigos);
+    if(contadorAmigos === 0){
+        totalGastoAmigo = 0;
+    }
 
     mostrarTotalGastado.estadistica = "$" + totalGastado;
     mostrarGastoCategoria.estadistica = categoriaMaxGasto;
@@ -129,7 +188,7 @@ function actualizarEstadisticas() {
     });
 
     guardarEstadisticas();
-
+    graficos();
 }
 
 
@@ -142,6 +201,7 @@ let sectionProfile = document.createElement("section");
 sectionProfile.className = "profile";
 main.appendChild(sectionProfile);
 if (usuario && (usuario.nombre !== "" && usuario.email !== "" && usuario.password !== "")){
+    sectionProfile.className = "profile";
     let imgProfile = document.createElement("img");
     imgProfile.src = "./assets/img/img-profile.png";
     let bienvenidoProfile = document.createElement("h2")
@@ -150,12 +210,15 @@ if (usuario && (usuario.nombre !== "" && usuario.email !== "" && usuario.passwor
     sectionProfile.appendChild(bienvenidoProfile)
     console.log(usuario)
 } else{
-    let noIngresoUsuario = document.createElement("h3")
-    noIngresoUsuario.innerText = `Sin cuenta Ingresada, puede que se pierdan datos!!`
+    sectionProfile.className = "profile-login";
+    let imgProfile = document.createElement("img");
+    imgProfile.src = "./assets/img/img-profile.png";
+    let noIngresoUsuario = document.createElement("a");
+    noIngresoUsuario.href = "./pages/inicio-sesion.html";
+    noIngresoUsuario.innerText = `Login`;
+    sectionProfile.appendChild(imgProfile);
     sectionProfile.appendChild(noIngresoUsuario);
 }
-
-
 
 
 //Declaramos Section con posibles futuros graficos
@@ -168,10 +231,14 @@ divTituloGrafico.innerHTML = `
                                 <h1>Grafico de Gastos</h1>
                                 <img src="./assets/img/estadisticas.png" alt="icono estadisticas">
                             </div>
+                            <div class="g-grafico">
+                                <canvas id="miGrafica"></canvas>
+                                <canvas id="fechasGrafico"></canvas>
+                            </div>
                             `;
 sectionGrafico.appendChild(divTituloGrafico);
-
-
+let miCanvas = document.getElementById("miGrafica").getContext("2d");
+let fechaCanva = document.getElementById("fechasGrafico").getContext("2d");
 
 
 //------------------------------ESTADISTICAS
@@ -193,7 +260,6 @@ botonEliminarValoresGenerales.addEventListener("click", ()=>{
 botonAgregarValoresGenerales.addEventListener("click", ()=>{
     sectionActualizarEstadisticas.style.display = "block"
 })
-
 
 
 //------------------------------INPUTS QUE MODIFICAN ESTADISTICAS
@@ -242,6 +308,7 @@ let nuevoLimiteDisponible = 0;
             console.log(dineroDisponible);
             console.log(limite)
             cambiarColorDineroDIsponible();
+            recalcularDatosPorMesDisponible()
             actualizarEstadisticas();
         })
         let formulario = document.getElementById("modificar-estadisticas");
@@ -281,11 +348,6 @@ const ARRAY_ESTADISTICAS = [mostrarTotalGastado, mostrarGastoCategoria, mostrarD
     })
 
 
-
-
-
-
-
 //-----------------------------------------BOTON AÑADIR DATOS
 let sectionAñadirBorrarDatos = document.createElement("section");
 sectionAñadirBorrarDatos.className = "añadir-eliminar-datos";
@@ -303,14 +365,6 @@ function añadirDatos(){
     let categoria = "";
     let fecha = "";
     botonAñadir.addEventListener("click", function(){
-        function obtenerGastoAmigo(){
-            let gastoAmigo;
-            do {
-                gastoAmigo = parseInt(prompt("Gasto del amigo:"));
-                isNaN(gastoAmigo) && alert("Por favor, ingrese un número válido para el gasto del amigo.");
-            } while (isNaN(gastoAmigo));
-            return gastoAmigo;
-        }
         Swal.fire({
             title: "Ingreso de datos",
             icon: "info",
@@ -318,7 +372,7 @@ function añadirDatos(){
                 <input type="text" id="nombre-amigo" class="swal2-input" placeholder="Nombre del amigo">
                 <input type="number" id="gasto" class="swal2-input" placeholder="Gasto">
                 <input type="text" id="categoria" class="swal2-input" placeholder="¿En que categoria?">
-                <input type="text" id="fecha" class="swal2-input" placeholder="¿En que fecha paso?">`,
+                <input type="date" id="fecha" class="swal2-input">`,
             showCancelButton: true,
             focusConfirm: false,
             preConfirm: () => {
@@ -332,52 +386,90 @@ function añadirDatos(){
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                //Codigo generador de registro de datos
-                contadorAmigos++;
-                let nuevoDato = new ingresarDatos(
-                    contadorAmigos,
-                    datoAmigo,
-                    gasto,
-                    categoria,
-                    fecha
-                );
-                datos.push(nuevoDato);
+                    console.log("erroe")
+                    id+=1;
+                    //Codigo generador de registro de datos
+                    let nuevoDato = new ingresarDatos(
+                        id,
+                        datoAmigo,
+                        gasto,
+                        categoria,
+                        fecha
+                    );
+                    datos.push(nuevoDato);
 
-                let datos1 = document.getElementById("datos1");
-                let datos2 = document.getElementById("datos2");
-                let datos3 = document.getElementById("datos3");
-                let datos4 = document.getElementById("datos4");
-                let datos5 = document.getElementById("datos5");
-                datos1.innerHTML += `<p>${nuevoDato.id}</p>`;
-                datos2.innerHTML += `<p>${nuevoDato.amigo}</p>`;
-                datos3.innerHTML += `<p>${nuevoDato.gastoAmigo}</p>`;
-                datos4.innerHTML += `<p>${nuevoDato.categoria}</p>`;
-                datos5.innerHTML += `<p>${nuevoDato.fecha}</p>`;
-
-                //------------Registro de categorias existentes para luego sacar en cual se gasto mas
-                categoriasGasto[nuevoDato.categoria] = (categoriasGasto[nuevoDato.categoria] || 0) + parseInt(nuevoDato.gastoAmigo);
-                totalGastado = totalGastado + Math.round(parseFloat(nuevoDato.gastoAmigo));
-                console.log("total gastado: "+totalGastado);
-                console.log(nuevoDato);
-                console.log(categoriasGasto);
-
-                //--------------Buscar de las categorias ingresadas por el user, en cual se gasto mas para luego poner en estadisticas
-                for (const categoria in categoriasGasto) {
-                    if (categoriasGasto[categoria] > maxGasto) {
-                        maxGasto = categoriasGasto[categoria];
-                        categoriaMaxGasto = categoria;
+                    //-----RECALCULAR CANT AMIGOS
+                    amigos[nuevoDato.amigo] = (amigos[nuevoDato.amigo] || 0) + parseInt(nuevoDato.gastoAmigo);
+                    let amigoExiste = false
+                    amigos.forEach(amigo =>{
+                        if(amigo === datoAmigo){
+                            amigoExiste = true
+                        }
+                    })
+                    if(amigoExiste === false){
+                        contadorAmigos = obtenerLongitudRealAmigos();
                     }
+                    console.log(amigos)
+
+                    let datos1 = document.getElementById("datos1");
+                    let datos2 = document.getElementById("datos2");
+                    let datos3 = document.getElementById("datos3");
+                    let datos4 = document.getElementById("datos4");
+                    let datos5 = document.getElementById("datos5");
+                    datos1.innerHTML += `<p>${nuevoDato.id}</p>`;
+                    datos2.innerHTML += `<p>${nuevoDato.amigo}</p>`;
+                    datos3.innerHTML += `<p>${nuevoDato.gastoAmigo}</p>`;
+                    datos4.innerHTML += `<p>${nuevoDato.categoria}</p>`;
+                    datos5.innerHTML += `<p>${nuevoDato.fecha}</p>`;
+
+                    //------------Registro de categorias existentes para luego sacar en cual se gasto mas
+                    categoriasGasto[nuevoDato.categoria] = (categoriasGasto[nuevoDato.categoria] || 0) + parseInt(nuevoDato.gastoAmigo);
+                    totalGastado = totalGastado + Math.round(parseFloat(nuevoDato.gastoAmigo));
+                    console.log("total gastado: "+totalGastado);
+                    console.log(nuevoDato);
+                    console.log(categoriasGasto);
+
+                    //--------------Buscar de las categorias ingresadas por el user, en cual se gasto mas para luego poner en estadisticas
+                    for (const categoria in categoriasGasto) {
+                        if (categoriasGasto[categoria] > maxGasto) {
+                            maxGasto = categoriasGasto[categoria];
+                            categoriaMaxGasto = categoria;
+                        }
+                    }
+
+                    dineroDisponible = dineroDisponible - Math.round(parseFloat(nuevoDato.gastoAmigo));
+                    cambiarColorDineroDIsponible();
+                
+
+                console.log("Categoría en la que se gastó más:", categoriaMaxGasto);
+                console.log("Total gastado en esa categoría:", maxGasto);
+                
+
+
+                //CREAR GASTOS POR FECHA
+                datosPorMes.fill(0);
+                for (const data of datos) {
+                    const mes = obtenerMes(data.fecha);
+                    datosPorMes[mes] += parseInt(data.gastoAmigo);
                 }
+                const mes = obtenerMes(nuevoDato.fecha);
+                datosPorMesDisponible[mes] = dineroDisponible;
+                console.log(datosPorMes);
+                console.log(datosPorMesDisponible);
 
-                dineroDisponible = dineroDisponible - Math.round(parseFloat(nuevoDato.gastoAmigo));
-                cambiarColorDineroDIsponible();
+
+                console.log(datos);
+                actualizarEstadisticas();
+                Swal.fire({
+                    title: "Se agregaron los datos con exito!",
+                    icon: "success"
+                });
+            } else{
+                Swal.fire({
+                    title: "Error al añadir los datos!",
+                    icon: "warning"
+                });
             }
-
-            console.log("Categoría en la que se gastó más:", categoriaMaxGasto);
-            console.log("Total gastado en esa categoría:", maxGasto);
-            actualizarEstadisticas();
-
-            console.log(datos);
         });
     });
 }
@@ -385,6 +477,7 @@ function añadirDatos(){
 function eliminarDatos() {
     let botonBorrar = document.querySelector(".eliminar-datos");
     botonBorrar.addEventListener("click", () => {
+        id-=1;
         console.log(datos);
         if (datos.length > 0) {
             let datoEliminado = datos.pop();
@@ -406,6 +499,12 @@ function eliminarDatos() {
             dineroDisponible += Math.round(parseFloat(datoEliminado.gastoAmigo));
             cambiarColorDineroDIsponible();
 
+            //-----RECALCULAR CANT AMIGOS
+            amigos[datoEliminado.amigo] -= datoEliminado.gastoAmigo;
+            if(amigos[datoEliminado.amigo] === 0){
+                amigos.pop(datoEliminado.amigo)
+            };
+            contadorAmigos = obtenerLongitudRealAmigos();
 
             // Recalcular gasto máximo por categoría
             categoriasGasto[datoEliminado.categoria] -= datoEliminado.gastoAmigo;
@@ -424,7 +523,10 @@ function eliminarDatos() {
                 categoriaMaxGasto = "";
             }
 
-            contadorAmigos--;
+            //Restar el gastos por fecha
+            const mes = obtenerMes(datoEliminado.fecha);
+            datosPorMes[mes] -= parseInt(datoEliminado.gastoAmigo);
+            console.log(datosPorMes)
 
             console.log(categoriasGasto)
             console.log("Categoría en la que se gastó más:", categoriaMaxGasto);
@@ -471,7 +573,7 @@ sectionDatosPresupuesto.innerHTML = `
                                     `;
 
 //-------------UNA VEZ CREADO EL CONTENEDOR DE DATOS CARGAMOS LOS DATOS ANTERIORES
-establecerDatos()
+establecerDatos();
 
 
 const botonModo = document.getElementById("botonModo");
@@ -487,3 +589,117 @@ eliminarDatos();
 añadirDatos();
 registrarModificacion();
 subirNuevosDatosAEstadisticas();
+
+
+function obtenerNombresCategorias() {
+    return Object.keys(categoriasGasto);
+}
+
+function obtenerValoresCategorias() {
+    return Object.values(categoriasGasto);
+}
+
+
+let colores = [];
+for(const categoria in categoriasGasto){
+    let color = `rgb(${parseInt(Math.random()*365)}, ${parseInt(Math.random()*365)}, ${parseInt(Math.random()*365)})`;
+    colores.push(color);
+}
+
+
+
+let chart = new Chart(miCanvas,{
+    type: "doughnut",
+    data:{
+        labels: obtenerNombresCategorias(),
+        datasets: [
+            {
+                label:"Gasto",
+                backgroundColor: colores,
+                data: obtenerValoresCategorias(),
+            }
+        ],
+    },
+    options:{}
+})
+
+let chart1 = new Chart(fechaCanva,{
+    type: "line",
+    data:{
+        labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+        datasets: [
+            {
+                label: 'Gastos',
+                data: datosPorMes,
+                borderColor: "rgb(114, 24, 24)",
+                backgroundColor: "rgb(114, 24, 24)",
+            },
+            {
+                label: 'Dinero Disponible',
+                data: datosPorMesDisponible,
+                borderColor: "rgb(15, 77, 40)",
+                backgroundColor: "rgb(15, 77, 40)",
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+        tooltip: {
+            mode: 'index',
+            intersect: false
+        },
+        title: {
+            display: true,
+            text: 'Gasto por Fecha'
+        }
+        },
+        hover: {
+        mode: 'index',
+        intersec: false
+        },
+        scales: {
+        x: {
+            title: {
+            display: true,
+            text: 'Mes'
+            }
+        },
+        y: {
+            title: {
+            display: true,
+            text: 'Valor'
+            },
+            min: 0,
+            max: (totalGastado + dineroDisponible),
+            ticks: {
+            // forces step size to be 50 units
+            stepSize: 50
+            }
+        }
+        }
+    },
+});
+
+
+function graficos(){
+    colores = [];
+    for(const categoria in categoriasGasto){
+        let color = `rgb(${parseInt(Math.random()*365)}, ${parseInt(Math.random()*365)}, ${parseInt(Math.random()*365)})`;
+        colores.push(color);
+    }
+//--------------ACTUALIZACION GRAFICO DE TORTA
+    chart.data.labels = obtenerNombresCategorias();
+    chart.data.datasets[0].data = obtenerValoresCategorias();
+    chart.data.datasets[0].backgroundColor = colores;  
+    chart.update();
+//--------------ACTUALIZACION GRAFICO DE LINEA
+    chart1.data.labels = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    chart1.data.datasets[0].data = datosPorMes;
+    chart1.data.datasets[1].data = datosPorMesDisponible; 
+    //chart1.options.scales.y.max = (totalGastado + dineroDisponible);
+    const maxValue = Math.max(...datosPorMes, ...datosPorMesDisponible);
+    chart1.options.scales.y.max = Math.ceil(maxValue / 100) * 100;
+    chart1.update();
+}
+graficos();

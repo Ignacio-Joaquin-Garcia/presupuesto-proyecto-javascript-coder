@@ -84,7 +84,8 @@ header {
     header .h-titulo p {
       font-family: 'Pacifico', cursive;
       font-weight: lighter;
-      font-size: 2rem; }
+      font-size: 2rem;
+      text-align: center; }
   header nav {
     display: flex;
     flex-direction: column; }
@@ -147,6 +148,18 @@ header {
   .profile h3 {
     color: #D47070; }
 
+.profile-login {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  margin-right: 2rem;
+  gap: 0.5rem; }
+  .profile-login a {
+    color: #A894FF;
+    font-size: 1.5rem; }
+  .profile-login img {
+    width: 2rem; }
+
 .grafico {
   display: flex;
   flex-direction: column;
@@ -158,6 +171,11 @@ header {
     padding: 1.5625rem; }
     .grafico .titulo-grafico img {
       width: 3rem; }
+  .grafico .g-grafico {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 50vh; }
 
 .modificar-estadisticas {
   display: flex;
@@ -363,16 +381,28 @@ header {
         margin: 1rem 0; }
 
 .claro {
-  background-color: white;
-  color: black; }
+  background-color: #D2C3F2;
+  color: #121212; }
   .claro h1 {
-    color: black; }
+    color: #121212; }
   .claro h2 {
-    color: black; }
+    color: #121212; }
   .claro h3 {
-    color: black; }
+    color: #121212; }
   .claro p {
-    color: black; }
+    color: #121212; }
+  .claro button {
+    background-color: #6C42BD; }
+  .claro .modificar-estadisticas button {
+    background-color: transparent; }
+  .claro .profile span {
+    color: #6C42BD; }
+  .claro header {
+    background-color: #4B3873; }
+    .claro header .h-titulo p {
+      color: white; }
+  .claro footer {
+    background-color: #9384B3; }
 
 footer {
   display: grid;
