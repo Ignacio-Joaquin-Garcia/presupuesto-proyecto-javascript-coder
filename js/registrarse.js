@@ -111,7 +111,6 @@ function registrarse(){
                 if(datosValidos === true){
                     buttonSubmit.disabled = true;
                     usuario = new nuevoUsuario(nombre, email, password)
-                    console.log(usuario)
                     //--GUARDAMOS DATOS EN API (HACEMOS LOS DATOS FLEXIBLES A CUALQUIER DISPOSITIVO)
                     fetch('https://658107903dfdd1b11c42512b.mockapi.io/datos/usuarios', {
                         method: 'POST',

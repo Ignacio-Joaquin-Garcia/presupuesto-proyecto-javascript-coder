@@ -3,6 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO Basico -->
+    <meta name="keywords" content="presupuestos, gastos entre amigos, contabilización, manejar dinero, controlar gastos">
+    <meta name="description" content="Aplicación Web para contabilizar y llevar un control de gastos entre amigos, generando estadisticas">
+    <meta name="author" content="Ignacio Garcia">
+    <link rel="shortcut icon" href="./assets/img/icono.ico" type="image/x-icon">
+    <!-- Open Graph -->
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://ignacio-joaquin-garcia.github.io/presupuesto-proyecto-javascript-coder/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Friends Budget">
+    <meta property="og:description" content="Aplicación Web para contabilizar y llevar un control de gastos entre amigos ">
+    <meta property="og:image" content="https://res.opengraph.xyz/e4b8c678-7bd5-445d-ba03-bfaad510c686/v3/ignacio-joaquin-garcia.github.io/Friends%20Budget/https%3A%2F%2Fopengraph.b-cdn.net%2Fproduction%2Fdocuments%2Fe6e0d690-c47d-44ee-a551-569682d543da.png%3Ftoken%3D_mWfZcCYXFsLKRfzSjBqH0KlOhRrTihOYhiK6B4gFoQ%26height%3D567%26width%3D1200%26expires%3D33239892265/og.png">
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="ignacio-joaquin-garcia.github.io">
+    <meta property="twitter:url" content="https://ignacio-joaquin-garcia.github.io/presupuesto-proyecto-javascript-coder/">
+    <meta name="twitter:title" content="Friends Budget">
+    <meta name="twitter:description" content="Aplicación Web para contabilizar y llevar un control de gastos entre amigos ">
+    <meta name="twitter:image" content="https://res.opengraph.xyz/e4b8c678-7bd5-445d-ba03-bfaad510c686/v3/ignacio-joaquin-garcia.github.io/Friends%20Budget/https%3A%2F%2Fopengraph.b-cdn.net%2Fproduction%2Fdocuments%2Fe6e0d690-c47d-44ee-a551-569682d543da.png%3Ftoken%3D_mWfZcCYXFsLKRfzSjBqH0KlOhRrTihOYhiK6B4gFoQ%26height%3D567%26width%3D1200%26expires%3D33239892265/og.png">
     <title>Friends Budget</title>
     <link rel="stylesheet" href="./css/style.css">
 </head>
@@ -32,37 +51,30 @@
                 <li><a href="#">Friends to Do</a></li>
             </ol>
         </nav>
+        <div class="div-boton-titulo">
+            <p>Modo noche</p>
+            <div class="div-noche">
+                <input type="checkbox" id="botonModo">
+                <label class="slider-v3" for="botonModo"></label>
+            </div>
+        </div>
     </header>
 
-<main id="main">
-    <!-- <section class="profile">
-        <img src="" alt="">
-        <h2>Bienvenido <span></span></h2>
-    </section> -->
-    
-    <form id="modificar-estadisticas">
-        <fieldset>
-            <legend>Cambiar valores de estadisticas</legend>
-            <label for="nuevo-dinero-disponible">Ingresar nuevo dinero disponible</label>
-            <input type="number" id="nuevo-dinero-disponible">
-            <label for="nuevo-limite-disponible">ingresar el nuevo limite</label>
-            <input type="number" id="nuevo-limite-disponible">
-        </fieldset>
-        <div class="cambio-estadisticas">
-            <button type="submit" id="descartar-datos">Descartar</button>
-            <button type="submit" id="subir-datos">Subir Datos</button>
-        </div>
-    </form>
-
-    <button type="button" id="botonModo">modo</button>
-</main>
-
-
-        <!-- <div class="separadores">
-            <img src="./assets/img/separador.png" alt="separador">
-            <div class="linea"></div>
-            <img src="./assets/img/separador.png" alt="separador">
-        </div> -->
+    <main id="main">
+        <form id="modificar-estadisticas">
+            <fieldset>
+                <legend>Cambiar valores de estadisticas</legend>
+                <label for="nuevo-dinero-disponible">Ingresar nuevo dinero disponible</label>
+                <input type="number" id="nuevo-dinero-disponible">
+                <label for="nuevo-limite-disponible">ingresar el nuevo limite</label>
+                <input type="number" id="nuevo-limite-disponible">
+            </fieldset>
+            <div class="cambio-estadisticas">
+                <button type="submit" id="descartar-datos">Descartar</button>
+                <button type="submit" id="subir-datos">Subir Datos</button>
+            </div>
+        </form>
+    </main>
 
     <footer>
         <div class="f-title">

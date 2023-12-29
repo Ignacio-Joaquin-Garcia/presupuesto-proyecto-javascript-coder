@@ -1,15 +1,23 @@
-fetch('https://658107903dfdd1b11c42512b.mockapi.io/datos/usuarios')
-.then(res => {
-    if (res.ok) {
-        return res.json();
+
+let valorUSD = undefined;
+fetch("https://exchange-rate-api1.p.rapidapi.com/latest?base=USD", {
+    method: "GET",
+    headers: {
+        'X-RapidAPI-Key': 'e0022187a6msh3bac010195377d0p1ef642jsned7e18271444',
+        'X-RapidAPI-Host': 'exchange-rate-api1.p.rapidapi.com'
     }
 })
-.then(usuarios => {
-    usuariosAPI = usuarios;
-})
-.catch(error => {
-    console.log("error en la captura de datos"+error);
-})
+    .then(response => {
+        return response.json();
+    })
+    .then(data => {
+        valorUSD = data.rates.ARS;
+        const estadisticaElement = document.querySelectorAll(".t-limite");
+        estadisticaElement.textContent = estadistica.estadistica;
+        mostrarLimiteDisponible.estadistica = (("$"+valorUSD) || "Error con el servidor");
+    })
+
+
 //----------------------DECLARAMOS VARIABLES PRINCIPALES--------
 let id = 0;
 let totalGastado = 0;
@@ -18,12 +26,6 @@ let contadorAmigos = 0;
 let totalGastoAmigo = 0;
 
 let limite = 0;
-
-let saberLimite = 0;
-let saberLimiteImg = "";
-let textoSaberLimite = "";
-let colorTextoLimite = "";
-
 
 let categoriaMaxGasto = "";
 let categoriasGasto = [];
@@ -122,8 +124,6 @@ function establecerDatos(){
 
     for(const data of datos){
         id+=1;
-        console.log(id)
-        console.log(data)
         let datos1 = document.getElementById("datos1");
         let datos2 = document.getElementById("datos2");
         let datos3 = document.getElementById("datos3");
@@ -141,11 +141,9 @@ function establecerDatos(){
     for (const data of datos) {
         const mes = obtenerMes(data.fecha);
         datosPorMes[mes] += parseInt(data.gastoAmigo);
-    } 
-    recalcularDatosPorMesDisponible()
-    console.log(datosPorMes)
-    console.log(datosPorMesDisponible)
-        
+    }
+    recalcularDatosPorMesDisponible();
+
     //RECREAMOS EL ARRAY CON CATEGORIAS, de esta forma nos ahorramos tener que guardarlo
     function crearArrayCategorias(){
         for (const dato of datos) {
@@ -160,8 +158,6 @@ function establecerDatos(){
     }
     crearArrayCategorias();
     crearArrayAmigo();
-    console.log(amigos);
-    console.log(categoriasGasto);
 }
 
 //----A tener en cuenta, se tiene que iniciar esta funcion antes de cargar cualquier elemento ya que contiene datos principales como variables
@@ -179,8 +175,8 @@ function actualizarEstadisticas() {
     mostrarDineroDisponible.estadistica = "$" + (dineroDisponible || 0);
     mostrarCantidadAmigos.estadistica = contadorAmigos;
     mostrarLimite.estadistica = "$" + (limite || 0);
-    mostrarLimiteDisponible.estadistica = "$" + (saberLimite || 0);
     mostrarTotalGastoAmigo.estadistica = "$" + (totalGastoAmigo ?? 0);
+    mostrarLimiteDisponible.estadistica = "$"+(valorUSD || "Error con el servidor");
 
     ARRAY_ESTADISTICAS.forEach((estadistica, index) => {
         const estadisticaElement = document.querySelectorAll(".t-gastado, .t-categoria, .t-disponible, .t-amigos, .t-limite, .t-gastar-amigo")[index];
@@ -208,7 +204,6 @@ if (usuario && (usuario.nombre !== "" && usuario.email !== "" && usuario.passwor
     bienvenidoProfile.innerHTML = `Bienvenido <span>${usuario.nombre}</span> !!`
     sectionProfile.appendChild(imgProfile);
     sectionProfile.appendChild(bienvenidoProfile)
-    console.log(usuario)
 } else{
     sectionProfile.className = "profile-login";
     let imgProfile = document.createElement("img");
@@ -229,7 +224,7 @@ let divTituloGrafico = document.createElement("div");
 divTituloGrafico.innerHTML = `
                             <div class="titulo-grafico">
                                 <h1>Grafico de Gastos</h1>
-                                <img src="./assets/img/estadisticas.png" alt="icono estadisticas">
+                                <img id="estadisticas" src="./assets/img/estadisticas.png" alt="icono estadisticas">
                             </div>
                             <div class="g-grafico">
                                 <canvas id="miGrafica"></canvas>
@@ -290,11 +285,9 @@ let nuevoLimiteDisponible = 0;
         let InputNuevoLimiteDisponible = document.getElementById("nuevo-limite-disponible");
         InputNuevoDineroDisponible.addEventListener("change", ()=>{
             nuevoDineroDisponible = parseInt(InputNuevoDineroDisponible.value);
-            console.log("El nuevo Dinero Disponible va a ser de: "+nuevoDineroDisponible)
         })
         InputNuevoLimiteDisponible.addEventListener("change", ()=>{
             nuevoLimiteDisponible = parseInt(InputNuevoLimiteDisponible.value);
-            console.log("El nuevo Limite Disponible va a ser de: "+nuevoLimiteDisponible)
         })
     }
 
@@ -305,8 +298,6 @@ let nuevoLimiteDisponible = 0;
             dineroDisponible = nuevoDineroDisponible;
             limite = nuevoLimiteDisponible;
             saberLimite = limite;
-            console.log(dineroDisponible);
-            console.log(limite)
             cambiarColorDineroDIsponible();
             recalcularDatosPorMesDisponible()
             actualizarEstadisticas();
@@ -330,8 +321,8 @@ let mostrarTotalGastado = new estadistica("Total Gastado", "$"+totalGastado,"t-g
 let mostrarGastoCategoria = new estadistica("Gasto Maximo en Categoria", categoriaMaxGasto, "t-categoria", "");
 let mostrarDineroDisponible = new estadistica("Dinero Disponible", "$"+(dineroDisponible || 0), "t-disponible", "");
 let mostrarCantidadAmigos = new estadistica("Cant. Amigos", contadorAmigos, "t-amigos", "");
-let mostrarLimite = new estadistica("Limite a gastar en total", "$"+(limite || 0), (colorTextoLimite || "t-limite"), (saberLimiteImg ?? ""));
-let mostrarLimiteDisponible = new estadistica((textoSaberLimite || "No limite ingresado"), "$"+(saberLimite || 0), "t-limite", "")
+let mostrarLimite = new estadistica("Limite a gastar en total", "$"+(limite || 0), "t-limite", "");
+let mostrarLimiteDisponible = new estadistica("Valor Dolar Hoy en ARS", (valorUSD || "Añada un dato antes"), "t-limite", "");
 let mostrarTotalGastoAmigo = new estadistica("Total a gastar x Amigo", "$"+totalGastoAmigo, "t-gastar-amigo", "");
 const ARRAY_ESTADISTICAS = [mostrarTotalGastado, mostrarGastoCategoria, mostrarDineroDisponible, mostrarCantidadAmigos, mostrarLimite, mostrarLimiteDisponible, mostrarTotalGastoAmigo];
     ARRAY_ESTADISTICAS.forEach(estadistica =>{
@@ -386,7 +377,6 @@ function añadirDatos(){
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                    console.log("erroe")
                     id+=1;
                     //Codigo generador de registro de datos
                     let nuevoDato = new ingresarDatos(
@@ -409,7 +399,6 @@ function añadirDatos(){
                     if(amigoExiste === false){
                         contadorAmigos = obtenerLongitudRealAmigos();
                     }
-                    console.log(amigos)
 
                     let datos1 = document.getElementById("datos1");
                     let datos2 = document.getElementById("datos2");
@@ -425,9 +414,6 @@ function añadirDatos(){
                     //------------Registro de categorias existentes para luego sacar en cual se gasto mas
                     categoriasGasto[nuevoDato.categoria] = (categoriasGasto[nuevoDato.categoria] || 0) + parseInt(nuevoDato.gastoAmigo);
                     totalGastado = totalGastado + Math.round(parseFloat(nuevoDato.gastoAmigo));
-                    console.log("total gastado: "+totalGastado);
-                    console.log(nuevoDato);
-                    console.log(categoriasGasto);
 
                     //--------------Buscar de las categorias ingresadas por el user, en cual se gasto mas para luego poner en estadisticas
                     for (const categoria in categoriasGasto) {
@@ -439,11 +425,7 @@ function añadirDatos(){
 
                     dineroDisponible = dineroDisponible - Math.round(parseFloat(nuevoDato.gastoAmigo));
                     cambiarColorDineroDIsponible();
-                
 
-                console.log("Categoría en la que se gastó más:", categoriaMaxGasto);
-                console.log("Total gastado en esa categoría:", maxGasto);
-                
 
 
                 //CREAR GASTOS POR FECHA
@@ -454,11 +436,8 @@ function añadirDatos(){
                 }
                 const mes = obtenerMes(nuevoDato.fecha);
                 datosPorMesDisponible[mes] = dineroDisponible;
-                console.log(datosPorMes);
-                console.log(datosPorMesDisponible);
 
 
-                console.log(datos);
                 actualizarEstadisticas();
                 Swal.fire({
                     title: "Se agregaron los datos con exito!",
@@ -478,7 +457,6 @@ function eliminarDatos() {
     let botonBorrar = document.querySelector(".eliminar-datos");
     botonBorrar.addEventListener("click", () => {
         id-=1;
-        console.log(datos);
         if (datos.length > 0) {
             let datoEliminado = datos.pop();
 
@@ -526,15 +504,7 @@ function eliminarDatos() {
             //Restar el gastos por fecha
             const mes = obtenerMes(datoEliminado.fecha);
             datosPorMes[mes] -= parseInt(datoEliminado.gastoAmigo);
-            console.log(datosPorMes)
-
-            console.log(categoriasGasto)
-            console.log("Categoría en la que se gastó más:", categoriaMaxGasto);
-            console.log("Total gastado en esa categoría:", maxGasto);
-
             actualizarEstadisticas();
-        } else {
-            console.log("No hay datos para eliminar");
         }
     })
 };
@@ -546,7 +516,7 @@ sectionDatosPresupuesto.className = "datos-presupuesto";
 main.appendChild(sectionDatosPresupuesto);
 sectionDatosPresupuesto.innerHTML = `
                                     <div class="cant-amigos">
-                                        <img class="d-p-titulos" src="./assets/img/cant-amigos.png" alt="doble tilde simbolico">
+                                        <img class="d-p-titulos" id="cant-amigos" src="./assets/img/cant-amigos.png" alt="doble tilde simbolico">
                                         <div id="datos1" class="datos">
                                         </div>
                                     </div>
@@ -575,12 +545,25 @@ sectionDatosPresupuesto.innerHTML = `
 //-------------UNA VEZ CREADO EL CONTENEDOR DE DATOS CARGAMOS LOS DATOS ANTERIORES
 establecerDatos();
 
-
-const botonModo = document.getElementById("botonModo");
-
-botonModo.addEventListener("click", ()=>{
+document.body.classList.toggle("claro");
+function cargaModoClaro(){
     document.body.classList.toggle("claro");
     document.body.classList.contains("claro") ? localStorage.setItem("modo","claro") : localStorage.setItem("modo", "negro");
+    let graficoImg = document.getElementById("estadisticas");
+    let cantAmigosImg = document.getElementById("cant-amigos")
+    graficoImg.src = "./assets/img/estadisticas-black.png";
+    cantAmigosImg.src = "./assets/img/cant-amigos-black.png";
+    if(localStorage.getItem("modo") === "negro"){
+        graficoImg.src = "./assets/img/estadisticas.png";
+        cantAmigosImg.src = "./assets/img/cant-amigos.png";
+    }
+}
+const botonModo = document.getElementById("botonModo");
+if(localStorage.getItem("modo", "claro")){
+    cargaModoClaro()
+}
+botonModo.addEventListener("click", ()=>{
+    cargaModoClaro()
 });
 
 
@@ -594,7 +577,6 @@ subirNuevosDatosAEstadisticas();
 function obtenerNombresCategorias() {
     return Object.keys(categoriasGasto);
 }
-
 function obtenerValoresCategorias() {
     return Object.values(categoriasGasto);
 }
@@ -605,8 +587,6 @@ for(const categoria in categoriasGasto){
     let color = `rgb(${parseInt(Math.random()*365)}, ${parseInt(Math.random()*365)}, ${parseInt(Math.random()*365)})`;
     colores.push(color);
 }
-
-
 
 let chart = new Chart(miCanvas,{
     type: "doughnut",
@@ -691,12 +671,12 @@ function graficos(){
 //--------------ACTUALIZACION GRAFICO DE TORTA
     chart.data.labels = obtenerNombresCategorias();
     chart.data.datasets[0].data = obtenerValoresCategorias();
-    chart.data.datasets[0].backgroundColor = colores;  
+    chart.data.datasets[0].backgroundColor = colores;
     chart.update();
 //--------------ACTUALIZACION GRAFICO DE LINEA
     chart1.data.labels = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     chart1.data.datasets[0].data = datosPorMes;
-    chart1.data.datasets[1].data = datosPorMesDisponible; 
+    chart1.data.datasets[1].data = datosPorMesDisponible;
     //chart1.options.scales.y.max = (totalGastado + dineroDisponible);
     const maxValue = Math.max(...datosPorMes, ...datosPorMesDisponible);
     chart1.options.scales.y.max = Math.ceil(maxValue / 100) * 100;

@@ -77,7 +77,6 @@ function capturarDatosInput(){
         usuariosAPI.forEach(usuario => {
             if(inputEmail.value === usuario.email && inputPassword.value === usuario.password){
                 elUsuarioEntro = true
-                console.log("usuario ok " +elUsuarioEntro)
                 //-------Guardamos al mismo tiempo el usuario ingresado para utilizar en los otros html
                 sessionStorage.setItem("usuario", JSON.stringify(usuario));
             }
@@ -90,7 +89,6 @@ function capturarDatosInput(){
             }
         })
         .then(() => {
-            console.log("logro entrar");
             let tituloAviso = document.createElement("h3")
             tituloAviso.innerText = "Entraste a tu cuenta!!"
             divContenedor.appendChild(tituloAviso)
@@ -109,7 +107,6 @@ function capturarDatosInput(){
             }, 1000)
         })
         .catch(() => {
-            console.log("contraseña erronea");
             divRegistro.style.animationName = "moverRegistro";
             let contador = 0;
             setTimeout(()=>{
