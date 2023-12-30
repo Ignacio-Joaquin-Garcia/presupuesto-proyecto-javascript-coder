@@ -162,11 +162,28 @@ function registrarse(){
     }
 }
 
-
-
 document.addEventListener("DOMContentLoaded", ()=>{
     buttonSubmit.addEventListener("click", ()=>{
         registrarse();
     })
 })
 
+let colorModo;
+function cargarModo() {
+    colorModo = localStorage.getItem("modo") || "negro";
+    document.body.className = colorModo;
+}
+const botonModo = document.getElementById("botonModo");
+function cambiarModo() {
+    cargarModo();
+    botonModo.addEventListener("click", () => {
+        if (document.body.className === "claro") {
+            document.body.className = "negro";
+            localStorage.setItem("modo", "negro");
+        } else {
+            document.body.className = "claro";
+            localStorage.setItem("modo", "claro");
+        }
+    });
+}
+cambiarModo();

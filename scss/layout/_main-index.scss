@@ -379,6 +379,11 @@ input:checked + .slider-v3::after {
     button{
         background-color: #6C42BD;
     }
+    .inicio-sesion{
+        button{
+            background-color: #6C42BD;
+        }
+    }
     .modificar-estadisticas{
         button{
             background-color: transparent;
@@ -407,6 +412,11 @@ input:checked + .slider-v3::after {
     }
     #cant-amigos{
         width: 3rem;
+    }
+    .registrarse{
+        a{
+            color: #6703ea !important;
+        }
     }
     .profile-login{
         a{

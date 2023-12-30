@@ -311,7 +311,6 @@ let nuevoLimiteDisponible = 0;
     }
 
 
-
 //------------------------Declaramos Section con todas las estadisticas del emulador
 let sectionEstadisticas = document.createElement("section");
 sectionEstadisticas.className = "estadisticas";
@@ -545,34 +544,40 @@ sectionDatosPresupuesto.innerHTML = `
 //-------------UNA VEZ CREADO EL CONTENEDOR DE DATOS CARGAMOS LOS DATOS ANTERIORES
 establecerDatos();
 
-document.body.classList.toggle("claro");
-function cargaModoClaro(){
-    document.body.classList.toggle("claro");
-    document.body.classList.contains("claro") ? localStorage.setItem("modo","claro") : localStorage.setItem("modo", "negro");
-    let graficoImg = document.getElementById("estadisticas");
-    let cantAmigosImg = document.getElementById("cant-amigos")
-    graficoImg.src = "./assets/img/estadisticas-black.png";
-    cantAmigosImg.src = "./assets/img/cant-amigos-black.png";
-    if(localStorage.getItem("modo") === "negro"){
-        graficoImg.src = "./assets/img/estadisticas.png";
-        cantAmigosImg.src = "./assets/img/cant-amigos.png";
+let colorModo;
+let graficoImg = document.getElementById("estadisticas");
+let cantAmigosImg = document.getElementById("cant-amigos")
+function cargarModo() {
+    colorModo = localStorage.getItem("modo") || "negro";
+    document.body.className = colorModo;
+    if (document.body.className === "claro"){
+        graficoImg.src = "./assets/img/estadisticas-black.png";
+            cantAmigosImg.src = "./assets/img/cant-amigos-black.png";
     }
 }
 const botonModo = document.getElementById("botonModo");
-if(localStorage.getItem("modo", "claro")){
-    cargaModoClaro()
+function cambiarModo() {
+    cargarModo();
+    botonModo.addEventListener("click", () => {
+        if (document.body.className === "claro") {
+            document.body.className = "negro";
+            localStorage.setItem("modo", "negro");
+            graficoImg.src = "./assets/img/estadisticas.png";
+            cantAmigosImg.src = "./assets/img/cant-amigos.png";
+        } else {
+            document.body.className = "claro";
+            localStorage.setItem("modo", "claro");
+            graficoImg.src = "./assets/img/estadisticas-black.png";
+            cantAmigosImg.src = "./assets/img/cant-amigos-black.png";
+        }
+    });
 }
-botonModo.addEventListener("click", ()=>{
-    cargaModoClaro()
-});
-
-
+cambiarModo();
 
 eliminarDatos();
 añadirDatos();
 registrarModificacion();
 subirNuevosDatosAEstadisticas();
-
 
 function obtenerNombresCategorias() {
     return Object.keys(categoriasGasto);
@@ -677,7 +682,6 @@ function graficos(){
     chart1.data.labels = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     chart1.data.datasets[0].data = datosPorMes;
     chart1.data.datasets[1].data = datosPorMesDisponible;
-    //chart1.options.scales.y.max = (totalGastado + dineroDisponible);
     const maxValue = Math.max(...datosPorMes, ...datosPorMesDisponible);
     chart1.options.scales.y.max = Math.ceil(maxValue / 100) * 100;
     chart1.update();
